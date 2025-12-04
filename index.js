@@ -41,7 +41,19 @@ function showSpinner() {
 function hideSpinner() {
   document.getElementById("spinner").style.display = "none";
 }
+function disableButtons() {
+  document.querySelectorAll("button").forEach(btn => {
+    btn.disabled = true;
+    btn.classList.add("disabled"); // optional styling
+  });
+}
 
+function enableButtons() {
+  document.querySelectorAll("button").forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove("disabled");
+  });
+}
 async function runSummary(type) {
   console.log("Running summarization of type:", type);
   if (!available) {
@@ -60,7 +72,7 @@ async function runSummary(type) {
 
   hideProgress();
   hideSpinner();
-
+  disableButtons();
   let summarizer;
 
   try {
@@ -99,5 +111,6 @@ async function runSummary(type) {
     output.textContent = "⚠️ Error: " + err.message;
   } finally {
     if (summarizer) summarizer.destroy();
+    enableButtons();
   }
 }
